@@ -1,19 +1,48 @@
-export default function Footer() {
+import { useState } from "react";
+
+export default function Footer({ showFilter, numberLeft}) {
+  let [filter, setFilter] = useState("all");
+
+  const filterSet = (f) => {
+    setFilter(f);
+    showFilter(f);
+  };
+
   return (
     <footer className="footer">
-      <span className="todo-count">1 items left</span>
+      <span className="todo-count">{numberLeft} items left</span>
       <ul className="filters">
         <li>
-          <button className="selected">All</button>
+          <button
+            onClick={() => filterSet("all")}
+            className={filter === "all" ? "selected" : ""}
+          >
+            All
+          </button>
         </li>
         <li>
-          <button>Active</button>
+          <button
+            onClick={() => filterSet("active")}
+            className={filter === "active" ? "selected" : ""}
+          >
+            Active
+          </button>
         </li>
         <li>
-          <button>Completed</button>
+          <button
+            onClick={() => filterSet("completed")}
+            className={filter === "completed" ? "selected" : ""}
+          >
+            Completed
+          </button>
         </li>
       </ul>
-      <button className="clear-completed">Clear completed</button>
+      <button
+        onClick={() => filterSet("ClearCompleted")}
+        className={filter === "ClearCompleted" ? "selected clear-completed" : "clear-completed"}
+      >
+        Clear completed
+      </button>
     </footer>
   );
 }
