@@ -6,21 +6,80 @@ import Footer from "./components/Footer";
 import { Component } from "react";
 
 export default class App extends Component {
-  deletedItem = () => {
-
-  }
-
-  completedItem = () => {
-
-  }
-
 
   createTodoItem = (label) => {
     return {
       label,
       time: new Date(),
+      id: Math.random()
     };
   };
+
+  state = {
+    todoData: [
+      this.createTodoItem("wake up"),
+      this.createTodoItem("grind"),
+      this.createTodoItem("go to sleep"),
+    ],
+  };
+
+  //   toggleProperty = (arr, id, propName) => {
+    
+  //   const idx = arr.findIndex((el) => el.id === id);
+  //   const oldItem = arr[idx];
+  //   const newItem = { ...oldItem, [propName]: !oldItem[propName] };
+
+  //   return [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)];
+
+  // }
+
+  // onToggleImportant = (id) => {
+  //   this.setState(({ todoData }) => {
+  //     return {
+  //       todoData: this.toggleProperty(todoData, id, "important")
+  //     }
+  //   });
+  // };
+
+  // onToggleDone = (id) => {
+  //   this.setState(({ todoData }) => {
+  //     return {
+  //       todoData: this.toggleProperty(todoData, id, "done")
+  //     }
+  //   });
+  // };
+
+
+  toggleProperty = (arr, id, propName) => {
+    
+    const idx = arr.findIndex((el) => el.id === id);
+    const oldItem = arr[idx];
+    const newItem = { ...oldItem, [propName]: !oldItem[propName] };
+
+    return [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)];
+
+  }
+
+  completedItem = (id) => {
+    this.setState(({ todoData }) => {
+      return {
+        todoData: this.toggleProperty(todoData, id, "completed")
+      }
+    });
+  }
+
+  deletedItem = (id) => {
+    this.setState(({ todoData }) => {
+      const idx = todoData.findIndex((el) => el.id === id);
+
+      const newArr = [...todoData.slice(0, idx), ...todoData.slice(idx + 1)];
+      return {
+        todoData: newArr,
+      };
+    });
+  }
+
+
 
   addItem = (text) => {
     if (!text) return;
@@ -31,13 +90,7 @@ export default class App extends Component {
     });
   };
 
-  state = {
-    todoData: [
-      this.createTodoItem("wake up"),
-      this.createTodoItem("grind"),
-      this.createTodoItem("go to sleep"),
-    ],
-  };
+
 
   render() {
     const { todoData } = this.state;
@@ -52,7 +105,7 @@ export default class App extends Component {
           >
             <TodoItem label={"as"} />
           </ul> */}
-          <ToDoList todos={todoData} />
+          <ToDoList todos={todoData} onCompleted={this.completedItem}onDeleted={this.deletedItem}/>
         </section>
         <Footer />
       </section>
