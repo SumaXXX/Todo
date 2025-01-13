@@ -4,17 +4,16 @@ import { formatDistanceToNow } from "date-fns";
 
 export default class TodoItem extends Component {
   render() {
-    const { label, time} = this.props;
-    const className = "active";
-
+    const { label, time, onCompleted, onDeleted ,completed} = this.props;
+    let className = "view"
+    if (completed)  className += " completed"
     return (
-      <li
-        className={className}
-      >
+      <li className={className}>
         <div className="view">
           <input
             className="toggle"
             type="checkbox"
+            onClick={onCompleted}
           ></input>
           <label>
             <span className="description">{label}</span>
@@ -23,7 +22,7 @@ export default class TodoItem extends Component {
             </span>
           </label>
           <button className="icon icon-edit"></button>
-          <button className="icon icon-destroy"></button>
+          <button onClick={onDeleted} className="icon icon-destroy"></button>
         </div>
       </li>
     );
