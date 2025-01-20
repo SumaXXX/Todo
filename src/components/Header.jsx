@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export default function Header({ onItemAdded }) {
-  const [label, setLabel] = useState("");
+  const [label, setLabel] = useState('');
 
   const onLabelChange = (e) => {
     setLabel(e.target.value);
@@ -10,7 +10,7 @@ export default function Header({ onItemAdded }) {
   const onSubmit = (e) => {
     e.preventDefault();
     onItemAdded(label);
-    setLabel("");
+    setLabel('');
   };
 
   return (
