@@ -1,9 +1,9 @@
-import "./App.css";
-import Header from "./components/Header";
-import ToDoList from "./components/TodoList";
-import Footer from "./components/Footer";
+import './App.css';
+import Header from './components/Header';
+import ToDoList from './components/TodoList';
+import Footer from './components/Footer';
 
-import { Component } from "react";
+import { Component } from 'react';
 
 export default class App extends Component {
   createTodoItem = (label) => {
@@ -15,12 +15,8 @@ export default class App extends Component {
   };
 
   state = {
-    todoData: [
-      this.createTodoItem("wake up"),
-      this.createTodoItem("grind"),
-      this.createTodoItem("go to sleep"),
-    ],
-    filter: "all",
+    todoData: [this.createTodoItem('wake up'), this.createTodoItem('grind'), this.createTodoItem('go to sleep')],
+    filter: 'all',
   };
 
   toggleProperty = (arr, id, propName) => {
@@ -34,7 +30,7 @@ export default class App extends Component {
   completedItem = (id) => {
     this.setState(({ todoData }) => {
       return {
-        todoData: this.toggleProperty(todoData, id, "completed"),
+        todoData: this.toggleProperty(todoData, id, 'completed'),
       };
     });
   };
@@ -69,28 +65,28 @@ export default class App extends Component {
 
   deleteCompletedItems = () => {
     this.setState(({ todoData }) => {
-      const completed = todoData.filter(el => !el.completed)
-      return { todoData:  completed};
+      const completed = todoData.filter((el) => !el.completed);
+      return { todoData: completed };
     });
-  }
+  };
 
   render() {
     const { todoData, filter } = this.state;
-    console.log(filter)
+    console.log(filter);
 
     const completedItems = todoData.filter((el) => el.completed);
-    const activeItems =  todoData.filter((el) => !el.completed)
+    const activeItems = todoData.filter((el) => !el.completed);
     let visibleItems = todoData;
-    let numberLeft = activeItems.length
-    if (filter === "completed") visibleItems = completedItems
-    if (filter === "active") visibleItems = activeItems
-    if (filter === "ClearCompleted") {
+    let numberLeft = activeItems.length;
+    if (filter === 'completed') visibleItems = completedItems;
+    if (filter === 'active') visibleItems = activeItems;
+    if (filter === 'ClearCompleted') {
       this.setState(({ filter }) => {
         return {
-          filter: "all"
+          filter: 'all',
         };
       });
-      this.deleteCompletedItems()
+      this.deleteCompletedItems();
     }
 
     return (
@@ -103,13 +99,9 @@ export default class App extends Component {
           >
             <TodoItem label={"as"} />
           </ul> */}
-          <ToDoList
-            todos={visibleItems}
-            onCompleted={this.completedItem}
-            onDeleted={this.deletedItem}
-          />
+          <ToDoList todos={visibleItems} onCompleted={this.completedItem} onDeleted={this.deletedItem} />
         </section>
-        <Footer showFilter={this.showFilteredItems} numberLeft={numberLeft}/>
+        <Footer showFilter={this.showFilteredItems} numberLeft={numberLeft} />
       </section>
     );
   }
