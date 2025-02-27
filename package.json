@@ -3,22 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "babel-eslint": "^10.1.0",
     "cra-template": "1.2.0",
     "date-fns": "^4.1.0",
-    "eslint": "^8.57.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-scripts": "5.0.1",
+    "@babel/preset-react": "^7.26.3",
+    "babel-eslint": "^10.1.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^4.5.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.1",
-    "prettier": "^3.4.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-scripts": "5.0.1"
+    "prettier": "^3.4.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -26,21 +27,23 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint ./src",
-    "lint-fix": "eslint ./src --fix",
-    "format": "prettier ./src",
+    "lint-fix": "eslint --fix ./src",
+    "format": "prettier --write ./src",
     "precommit": "lint-staged",
     "prepare": "husky"
   },
   "lint-staged": {
     "*": [
-      "eslint --write",
+      "eslint --fix ./src",
       "prettier --write"
     ]
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "airbnb",
+      "prettier"
     ]
   },
   "browserslist": {
@@ -56,6 +59,6 @@
     ]
   },
   "devDependencies": {
-    "eslint-plugin-prettier": "^5.2.3"
+
   }
 }

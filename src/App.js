@@ -1,9 +1,9 @@
 import './App.css';
+import { Component } from 'react';
+
 import Header from './components/Header';
 import ToDoList from './components/TodoList';
 import Footer from './components/Footer';
-
-import { Component } from 'react';
 
 export default class App extends Component {
   createTodoItem = (label) => {
@@ -56,7 +56,7 @@ export default class App extends Component {
   };
 
   showFilteredItems = (f) => {
-    this.setState(({ filter }) => {
+    this.setState(() => {
       return {
         filter: f,
       };
@@ -72,7 +72,6 @@ export default class App extends Component {
 
   render() {
     const { todoData, filter } = this.state;
-    console.log(filter);
 
     const completedItems = todoData.filter((el) => el.completed);
     const activeItems = todoData.filter((el) => !el.completed);
@@ -81,7 +80,7 @@ export default class App extends Component {
     if (filter === 'completed') visibleItems = completedItems;
     if (filter === 'active') visibleItems = activeItems;
     if (filter === 'ClearCompleted') {
-      this.setState(({ filter }) => {
+      this.setState(() => {
         return {
           filter: 'all',
         };
@@ -93,12 +92,6 @@ export default class App extends Component {
       <section className="todoapp">
         <Header onItemAdded={this.addItem} />
         <section className="main">
-          {/* <ul
-            className="todo-list"
-            onItemAdded={addItem}
-          >
-            <TodoItem label={"as"} />
-          </ul> */}
           <ToDoList todos={visibleItems} onCompleted={this.completedItem} onDeleted={this.deletedItem} />
         </section>
         <Footer showFilter={this.showFilteredItems} numberLeft={numberLeft} />
