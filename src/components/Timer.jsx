@@ -1,55 +1,46 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 
-export class Timer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isRunning: false,
-      time: 0,
-    };
-  }
+export function Timer({ _time, setTimerTime, id }) {
+  const [time, setTime] = useState(_time);
+  const [isRunning, setIsRunning] = useState(false);
 
-  componentDidMount() {
-    this.interval = null;
-  }
+  useEffect(() => {
+    let interval = null;
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.isRunning && !prevState.isRunning) {
-      this.interval = setInterval(() => {
-        this.setState((prevState) => ({
-          time: prevState.time + 1,
-        }));
+    if (isRunning) {
+      interval = setInterval(() => {
+        setTime((prevTime) => prevTime - 1);
+        setTimerTime(id, time);
       }, 1000);
-    } else if (!this.state.isRunning && prevState.isRunning) {
-      clearInterval(this.interval);
+    } else if (!isRunning && time !== 0) {
+      clearInterval(interval);
     }
-  }
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
+    if (time < 0) {
+      setTime((prevTime) => prevTime + 1);
+      clearInterval(interval);
+    }
 
-  startTimer = () => {
-    this.setState(({
-        isRunning: true
-    }));
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isRunning, time]);
+
+  const startTimer = () => {
+    setIsRunning(true);
   };
 
-  pauseTimer = () => {
-    this.setState(({
-        isRunning: false
-    }));
+  const pauseTimer = () => {
+    setIsRunning(false);
   };
 
-  render() {
-    return (
-      <div>
-        <span class="description timer">
-          <button class="icon icon-play" onClick={this.startTimer} ></button>
-          <button class="icon icon-pause" onClick={this.pauseTimer}></button>
-           <span className='timer-count'>{this.state.time} sec</span>
-        </span>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <span className="description timer">
+        <button className="icon icon-play" onClick={startTimer}></button>
+        <button className="icon icon-pause" onClick={pauseTimer}></button>
+        <span className="timer-count">{time} sec</span>
+      </span>
+    </div>
+  );
 }
