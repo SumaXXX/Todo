@@ -40,7 +40,7 @@ export default class TodoItem extends Component {
   render() {
     const {
       label,
-      time,
+      createdAt,
       onCompleted,
       onDeleted,
       completed,
@@ -71,7 +71,7 @@ export default class TodoItem extends Component {
             <label>
               <span className="description item-label">{label}</span>
               <Timer setTimerTime={setTimerTime} id={id} _time={timerTime} />
-              <span className="created">{formatDistanceToNow(time, { addSuffix: true, includeSeconds: true })}</span>
+              <span className="created">{formatDistanceToNow(createdAt, { addSuffix: true, includeSeconds: true })}</span>
             </label>
             <button onClick={onEdited} className="icon icon-edit"></button>
             <button onClick={onDeleted} className="icon icon-destroy"></button>
@@ -83,7 +83,7 @@ export default class TodoItem extends Component {
     if (isEditing)
       return (
         <form onSubmit={(e) => onSubmit(e)}>
-          <input ref={this.inputRef} type="text" autoFocus className="edit" onChange={this.onLabelEditing} />
+          <input ref={this.inputRef} type="text" placeholder={label} autoFocus className="edit" onChange={this.onLabelEditing} />
         </form>
       );
   }

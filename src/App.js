@@ -9,7 +9,7 @@ export default class App extends Component {
   createTodoItem = (label, time) => {
     return {
       label,
-      time: new Date(),
+      createdAt: new Date(),
       id: Math.random(),
       timerTime: time,
       isEditing: false,
@@ -89,23 +89,21 @@ export default class App extends Component {
 
   onEdited = (id) => {
     this.setState(({ todoData }) => {
-       return {
+      return {
         todoData: this.toggleProperty(todoData, id, 'isEditing'),
       };
     });
   };
 
   onSubmitedEdit = (id, text) => {
-    if (!text) return
+    if (!text) return;
     this.setState(({ todoData }) => {
       const idx = todoData.findIndex((el) => el.id === id);
       todoData[idx].label = text;
       !todoData[idx].isEditing;
     });
-    this.onEdited(id)
+    this.onEdited(id);
   };
-  
-
 
   render() {
     const { todoData, filter } = this.state;
