@@ -11,7 +11,7 @@ const createTodoItem = (label, time) => ({
   id: Math.random(),
   timerTime: time,
   isEditing: false,
-  completed: false, // Added completed property
+  completed: false,
 });
 
 const App = () => {
