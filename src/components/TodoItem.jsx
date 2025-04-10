@@ -65,7 +65,7 @@ const TodoItem = ({
           </label>
           <button onClick={onEdited} className="icon icon-edit" />
           <button onClick={onDeleted} className="icon icon-destroy" />
-          <input type="text" className="edit" /> {/* This input is not used in the non-editing state */}
+          <input type="text" className="edit" />
         </div>
       </li>
     );
