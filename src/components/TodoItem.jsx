@@ -1,90 +1,88 @@
-import React, { Component } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { Timer } from './Timer';
 
-export default class TodoItem extends Component {
-  state = {
-    newLabel: '',
-  };
-  inputRef = React.createRef();
+const TodoItem = ({
+  label,
+  time,
+  onCompleted,
+  onDeleted,
+  completed,
+  setTimerTime,
+  id,
+  timerTime,
+  isEditing,
+  onEdited,
+  onSubmitedEdit,
+}) => {
+  const [newLabel, setNewLabel] = useState('');
+  const inputRef = useRef(null);
 
-  onLabelEditing = (e) => {
-    this.setState({
-      newLabel: e.target.value,
-    });
+  const onLabelEditing = (e) => {
+    setNewLabel(e.target.value);
   };
 
-  handleClickOutside = (event) => {
-    console.log(this.inputRef);
-    if (this.inputRef.current && !this.inputRef.current.contains(event.target)) {
-      this.props.onEdited(this.props.id);
+  const handleClickOutside = (event) => {
+    if (inputRef.current && !inputRef.current.contains(event.target) && isEditing) {
+      onEdited(id);
     }
   };
 
-  handleKeyDown = (event) => {
-    if (event.key === 'Escape' && this.props.isEditing === true) {
-      this.props.onEdited(this.props.id);
+  const handleKeyDown = (event) => {
+    if (event.key === 'Escape' && isEditing) {
+      onEdited(id);
     }
   };
 
-  componentDidMount() {
-    document.addEventListener('mousedown', this.handleClickOutside);
-    document.addEventListener('keydown', this.handleKeyDown);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutside);
-    document.removeEventListener('keydown', this.handleKeyDown);
-  }
-
-  render() {
-    const {
-      label,
-      time,
-      onCompleted,
-      onDeleted,
-      completed,
-      setTimerTime,
-      id,
-      timerTime,
-      isEditing,
-      onEdited,
-      onSubmitedEdit,
-    } = this.props;
-    let className = 'active';
-    if (completed) className += ' completed';
-
-    const onSubmit = (e) => {
-      e.preventDefault();
-
-      onSubmitedEdit(id, this.state.newLabel);
-      this.setState({
-        newLabel: '',
-      });
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
     };
+  }, [handleClickOutside, handleKeyDown, isEditing]);
 
-    if (!isEditing)
-      return (
-        <li className={className}>
-          <div className="view">
-            <input className="toggle" type="checkbox" onClick={onCompleted}></input>
-            <label>
-              <span className="description item-label">{label}</span>
-              <Timer setTimerTime={setTimerTime} id={id} _time={timerTime} />
-              <span className="created">{formatDistanceToNow(time, { addSuffix: true, includeSeconds: true })}</span>
-            </label>
-            <button onClick={onEdited} className="icon icon-edit"></button>
-            <button onClick={onDeleted} className="icon icon-destroy"></button>
-            <input type="text" className="edit"></input>
-          </div>
-        </li>
-      );
+  const className = `active ${completed ? 'completed' : ''}`;
 
-    if (isEditing)
-      return (
-        <form onSubmit={(e) => onSubmit(e)}>
-          <input ref={this.inputRef} type="text" autoFocus className="edit" onChange={this.onLabelEditing} />
-        </form>
-      );
+  const onSubmit = (e) => {
+    e.preventDefault();
+    onSubmitedEdit(id, newLabel);
+    setNewLabel('');
+  };
+
+  if (!isEditing) {
+    return (
+      <li className={className}>
+        <div className="view">
+          <input className="toggle" type="checkbox" onClick={onCompleted} />
+          <label>
+            <span className="description item-label">{label}</span>
+            <Timer setTimerTime={setTimerTime} id={id} _time={timerTime} />
+            <span className="created">
+              {formatDistanceToNow(time, { addSuffix: true, includeSeconds: true })}
+            </span>
+          </label>
+          <button onClick={onEdited} className="icon icon-edit" />
+          <button onClick={onDeleted} className="icon icon-destroy" />
+          <input type="text" className="edit" /> {/* This input is not used in the non-editing state */}
+        </div>
+      </li>
+    );
   }
-}
+
+  return (
+    <form onSubmit={onSubmit}>
+      <input
+        ref={inputRef}
+        type="text"
+        autoFocus
+        className="edit"
+        value={newLabel}
+        onChange={onLabelEditing}
+      />
+    </form>
+  );
+};
+
+export default TodoItem;
