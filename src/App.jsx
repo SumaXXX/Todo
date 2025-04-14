@@ -53,7 +53,7 @@ const App = () => {
   }, []);
 
   const addItem = useCallback((text, time) => {
-    if (!text) return;
+    if (!text.replaceAll(' ', '')) return;
     const newItem = createTodoItem(text, time);
     setTodoData((prevTodoData) => [...prevTodoData, newItem]);
   }, []);
@@ -71,7 +71,7 @@ const App = () => {
   }, [toggleProperty]);
 
   const onSubmitedEdit = useCallback((id, text) => {
-    if (!text) return;
+    if (!text.replaceAll(' ', '')) return;
     setTodoData((prevTodoData) => {
       const idx = prevTodoData.findIndex((el) => el.id === id);
       const updatedTodo = { ...prevTodoData[idx], label: text, isEditing: false };
