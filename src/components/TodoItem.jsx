@@ -15,7 +15,7 @@ const TodoItem = ({
   onEdited,
   onSubmitedEdit,
 }) => {
-  const [newLabel, setNewLabel] = useState('');
+  const [newLabel, setNewLabel] = useState(label);
   const inputRef = useRef(null);
 
   const onLabelEditing = (e) => {
@@ -48,7 +48,6 @@ const TodoItem = ({
   const onSubmit = (e) => {
     e.preventDefault();
     onSubmitedEdit(id, newLabel);
-    setNewLabel('');
   };
 
   if (!isEditing) {
